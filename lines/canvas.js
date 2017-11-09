@@ -2,11 +2,10 @@ const canvas = document.querySelector('canvas');
 const canvWidth = canvas.width = window.innerWidth;
 const canvHeight = canvas.height = window.innerHeight;
 const ctx = canvas.getContext('2d');
-const initialPoint = [canvWidth - 100 + Math.random() * 10, 50 + Math.random() * 10];
 const pointHolder = {
     right: []
 };
-let lastPoint;
+let lastPoint, initialPoint;
 
 
 function randomizeLineColor() {
@@ -14,27 +13,21 @@ function randomizeLineColor() {
     // ctx.strokeStyle = 'black';
 }
 
+function isOdd(num) {
+    return num % 2;
+}
+
 function drawSquare() {
-    const movement = Math.random() * 5;
+    const movement = Math.random();
     ctx.clearRect(0, 0, canvWidth, canvHeight);
-    ctx.beginPath();
+    initialPoint = [canvWidth - 100 + Math.random() * 10, 50 + Math.random() * 10];
     ctx.moveTo.apply(ctx, initialPoint);
+    ctx.beginPath();
     (function drawRightLines(iterator) {
-        // randomizeLineColor();
+        randomizeLineColor();
         let x, y;
-        if (pointHolder.right[iterator]) {
-            console.log('here');
-            x = pointHolder.right[iterator][0];
-            y = pointHolder.right[iterator][1];
-            pointHolder.right[iterator]= [x, y];
-        }
-        else {
-            const currentPointLocation = {};
-            x = canvWidth - 100 + Math.random() * 10;
-            y = 50 + iterator;
-            currentPointLocation[iterator] = [x, y];
-            pointHolder.right.push(currentPointLocation);
-        }
+        ;x = (isOdd(iterator/10) ? canvWidth - 20 : canvWidth) - 200 - movement;
+        y = 50 + iterator;
         ctx.lineTo(x, y);
         if (iterator < 500) {
             drawRightLines(iterator + 10);
@@ -86,7 +79,7 @@ function drawSquare() {
     //     }
     // })(10);
     // Connect last to first dot
-    ctx.lineTo.apply(ctx, initialPoint);
+    ctx.moveTo.apply(ctx, initialPoint);
     ctx.stroke();
     window.requestAnimationFrame(drawSquare);
 }
