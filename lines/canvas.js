@@ -12,8 +12,12 @@ function randomizeLineColor() {
     // ctx.strokeStyle = 'black';
 }
 
+// Generate initial values
 (function iterate(iterator) {
-    const newPoint = isOdd(iterator/10) ? canvWidth / 2 + Math.random() * 10 : canvWidth / 2 - Math.random() * 10;
+    const newPoint = [
+        isOdd(iterator/10) ? canvWidth / 2 + Math.random() * 3: canvWidth / 2 - Math.random() * 3,
+        isOdd(iterator/10) ? 50 + iterator : 50 + iterator
+    ];
     pointHolder[iterator] = newPoint;
     if (iterator < 500) {
         iterate(iterator + 10);
@@ -25,18 +29,18 @@ function isOdd(num) {
 }
 
 function updateMovement() {
-    if (movement > 20) {
+    if (movement > 5) {
         movementUp = false;
     }
-    else if (movement < -20) {
+    else if (movement < -5) {
         movementUp = true;
     }
 
     if (movementUp) {
-        movement += 0.005;
+        movement += 1;
     }
     else {
-        movement -= 0.005;
+        movement -= 1;
     }
 }
 
@@ -49,10 +53,8 @@ function drawSquare() {
     (function drawRightLines(iterator) {
         // randomizeLineColor();
         let x, y;
-        x = pointHolder[iterator] + movement * Math.random();
-        // console.log(pointHolder[iterator]);
-        // x = 10 + iterator;
-        y = 50 + iterator;
+        x = pointHolder[iterator][0] + movement / 5;
+        y = pointHolder[iterator][1] - movement / 3;
         ctx.lineTo(x, y);
         updateMovement();
         if (iterator < 500) {
@@ -108,7 +110,7 @@ function drawSquare() {
     // Connect last to first dot
     ctx.moveTo.apply(ctx, initialPoint);
     ctx.stroke();
-    window.requestAnimationFrame(drawSquare);
+    window.setTimeout(drawSquare, 50);
 }
 drawSquare();
 console.log(pointHolder);
