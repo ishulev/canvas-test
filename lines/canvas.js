@@ -16,7 +16,7 @@ function randomizeLineColor() {
 (function iterate(iterator) {
     const newPoint = [
         isOdd(iterator/10) ? canvWidth / 2 + Math.random() * 3: canvWidth / 2 - Math.random() * 3,
-        isOdd(iterator/10) ? 50 + iterator : 50 + iterator
+        isOdd(iterator/10) ? 50 + iterator + Math.random() * 3 : 50 + iterator - + Math.random() * 3
     ];
     pointHolder[iterator] = newPoint;
     if (iterator < 500) {
